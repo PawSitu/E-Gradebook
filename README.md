@@ -1,61 +1,99 @@
-# E-Dziennik
+# E-Gradebook
 
-Aplikacja E-Dziennik to system elektronicznego dziennika szkolnego zbudowany w technologii WPF (.NET 8) z wykorzystaniem wzorca MVVM.
+A school electronic gradebook system built with WPF (.NET 8) using the MVVM pattern.
 
-## Funkcjonalnoœci
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)
+![WPF](https://img.shields.io/badge/WPF-Windows-0078D4?logo=windows)
+![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-### Dla Nauczycieli
-- Przegl¹danie przypisanych klas i przedmiotów
-- Wystawianie i edycja ocen
-- Zarz¹dzanie frekwencj¹ uczniów
-- Obliczanie œrednich i statystyk
+## ?? Features
 
-### Dla Uczniów
-- Przegl¹danie w³asnych ocen
-- Sprawdzanie frekwencji
-- Podgl¹d planu zajêæ
+### For Teachers
+- View assigned classes and subjects
+- Grade management (add, edit, view)
+- Student attendance tracking
+- Calculate averages and statistics
 
-### Dla Administratorów
-- Zarz¹dzanie u¿ytkownikami systemu
-- Administracja baz¹ danych
+### For Students
+- View grades for all subjects
+- Check attendance records
+- Access class schedule
 
-## Technologie
+### For Administrators
+- User management system
+- Database administration
 
-- **.NET 8**
-- **WPF** (Windows Presentation Foundation)
-- **SQLite** - baza danych
-- **MVVM** - wzorzec architektury
+## ??? Technologies
 
-## Struktura projektu
+- **.NET 8** - Modern .NET platform
+- **WPF** (Windows Presentation Foundation) - Desktop UI framework
+- **SQLite** - Lightweight database
+- **MVVM** - Architecture pattern
+- **Microsoft.Data.Sqlite** - Database connectivity
+
+## ?? Project Structure
 
 ```
-dziennik/
-??? Data/              # Skrypty bazy danych
-??? Models/            # Modele danych
-??? ViewModels/        # ViewModele (MVVM)
-??? Views/             # Widoki XAML
-??? Services/          # Serwisy dostêpu do danych
+E-Gradebook/
+??? dziennik/
+?   ??? Data/              # Database scripts and SQLite file
+?   ??? Models/            # Data models
+?   ??? ViewModels/        # MVVM ViewModels
+?   ??? Views/             # XAML views
+?   ??? Services/          # Data access services
+?   ??? Converters/        # Value converters
+??? dziennik.sln           # Solution file
+??? README.md
 ```
 
-## Uruchomienie
+## ?? Getting Started
 
-1. Sklonuj repozytorium
-2. Otwórz projekt w Visual Studio 2022 lub nowszym
-3. Zbuduj rozwi¹zanie
-4. Uruchom aplikacjê
+### Prerequisites
 
-## Baza danych
+- Windows 10/11
+- Visual Studio 2022 or newer
+- .NET 8 SDK
 
-Projekt wykorzystuje bazê SQLite. Skrypt inicjalizacyjny znajduje siê w pliku `dziennik/Data/dziennik.sql`.
+### Installation
 
-### Domyœlne dane logowania
+1. Clone the repository
+```bash
+git clone https://github.com/PawSitu/E-Gradebook.git
+cd E-Gradebook
+```
 
-Szczegó³y dostêpu znajduj¹ siê w pliku SQL z danymi testowymi.
+2. Open the solution in Visual Studio
+3. Build and run the project (Press F5 or use dotnet run)
 
-## Autorzy
+## ?? Database
 
-Projekt stworzony jako czêœæ projektu edukacyjnego.
+The project uses SQLite database. The initialization script is located at `dziennik/Data/dziennik.sql`.
 
-## Licencja
+### Test Login Credentials
 
-Ten projekt jest dostêpny na potrzeby edukacyjne.
+The database comes pre-populated with test data:
+- Login: `firstname.lastname`
+- Password: `u{id}` (e.g., u1, u2, u3...)
+
+**?? Note:** This is for testing purposes only. Never use plain text passwords in production!
+
+## ?? Screenshots
+
+_Coming soon..._
+
+## ?? Contributing
+
+This is an educational project. Feel free to fork and experiment!
+
+## ?? License
+
+This project is available under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## ?? Author
+
+Created as part of an educational project.
+
+## ?? Disclaimer
+
+This application is designed for educational purposes and demonstration. It should not be used in a production environment without implementing proper security measures, especially regarding password storage and user authentication.
