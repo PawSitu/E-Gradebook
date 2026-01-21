@@ -20,10 +20,6 @@ A school electronic gradebook system built with WPF (.NET 8) using the MVVM patt
 - Check attendance records
 - Access class schedule
 
-### For Administrators
-- User management system
-- Database administration
-
 ## ??? Technologies
 
 - **.NET 8** - Modern .NET platform
