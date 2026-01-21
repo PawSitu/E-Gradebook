@@ -7,7 +7,7 @@ A school electronic gradebook system built with WPF (.NET 8) using the MVVM patt
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-## ?? Features
+## Features
 
 ### For Teachers
 - View assigned classes and subjects
@@ -20,7 +20,7 @@ A school electronic gradebook system built with WPF (.NET 8) using the MVVM patt
 - Check attendance records
 - Access class schedule
 
-## ??? Technologies
+## Technologies
 
 - **.NET 8** - Modern .NET platform
 - **WPF** (Windows Presentation Foundation) - Desktop UI framework
@@ -28,22 +28,7 @@ A school electronic gradebook system built with WPF (.NET 8) using the MVVM patt
 - **MVVM** - Architecture pattern
 - **Microsoft.Data.Sqlite** - Database connectivity
 
-## ?? Project Structure
-
-```
-E-Gradebook/
-??? dziennik/
-?   ??? Data/              # Database scripts and SQLite file
-?   ??? Models/            # Data models
-?   ??? ViewModels/        # MVVM ViewModels
-?   ??? Views/             # XAML views
-?   ??? Services/          # Data access services
-?   ??? Converters/        # Value converters
-??? dziennik.sln           # Solution file
-??? README.md
-```
-
-## ?? Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -62,7 +47,7 @@ cd E-Gradebook
 2. Open the solution in Visual Studio
 3. Build and run the project (Press F5 or use dotnet run)
 
-## ?? Database
+## Database
 
 The project uses SQLite database. The initialization script is located at `dziennik/Data/dziennik.sql`.
 
@@ -74,22 +59,19 @@ The database comes pre-populated with test data:
 
 **?? Note:** This is for testing purposes only. Never use plain text passwords in production!
 
-## ?? Screenshots
-
-_Coming soon..._
-
-## ?? Contributing
+## Contributing
 
 This is an educational project. Feel free to fork and experiment!
 
-## ?? License
+## License
 
 This project is available under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## ?? Author
+## Author
+Paweł Sitek
 
 Created as part of an educational project.
 
-## ?? Disclaimer
+## Disclaimer
 
 This application is designed for educational purposes and demonstration. It should not be used in a production environment without implementing proper security measures, especially regarding password storage and user authentication.
