@@ -1,0 +1,201 @@
+<UserControl x:Class="dziennik.Views.StudentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:dziennik.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="{Binding FullName}" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="{Binding ClassName}" FontSize="16" Margin="0,5,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="{Binding OverallAverage, StringFormat='Average Grade: {0}'}" 
+                               FontWeight="Bold" Margin="0,0,15,0"/>
+                    <TextBlock Text="{Binding OverallAttendance, StringFormat='Overall Attendance: {0}%'}" 
+                               FontWeight="Bold" Foreground="#1976D2"/>
+                </StackPanel>
+            </StackPanel>
+            <Button Content="Logout" Command="{Binding LogoutCommand}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,0,0,0" Padding="10,5" Height="32"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="2">
+            <TabItem Header="Grades">
+                <ListView ItemsSource="{Binding SubjectsGrades}" Margin="0,10">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Header="{Binding Subject.Name}" Margin="0,5">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                                        <TextBlock Text="{Binding SubjectAverage, StringFormat='Average: {0}'}" 
+                                                   FontWeight="Bold" Margin="0,0,15,0"/>
+                                        <TextBlock Text="{Binding FinalGrade, StringFormat='Final Grade: {0}'}" 
+                                                   FontWeight="Bold" Foreground="#1976D2"/>
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding Grades}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="LightGray" BorderThickness="1" 
+                                                        Margin="2" Padding="5" CornerRadius="3">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Value}" FontWeight="Bold"/>
+                                                        <TextBlock Text=", Issued: " Margin="5,0,0,0"/>
+                                                        <TextBlock Text="{Binding IssueDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </TabItem>
+
+            <TabItem Header="Attendance">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Attendance Statistics" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                    <ListView Grid.Row="1" ItemsSource="{Binding SubjectsAttendance}" Margin="0,0,0,15"
+                              BorderThickness="1" BorderBrush="#E0E0E0" MaxHeight="200">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Subject" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding SubjectName}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Attendance" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding AttendancePercent, StringFormat='{}{0}%'}" 
+                                                       FontWeight="Bold"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Details" Width="250">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DetailsStat}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <TextBlock Grid.Row="2" Text="Attendance List" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                    <ListView Grid.Row="2" ItemsSource="{Binding Attendance}" Margin="0,30,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Date" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Subject" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Subject}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status}" 
+                                                       Foreground="{Binding StatusColor}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Schedule">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Class Schedule" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                    <ListView Grid.Row="1" ItemsSource="{Binding Schedule}" Margin="0,10">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Start Time" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding StartTime, StringFormat='{}{0:HH:mm}'}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="End Time" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding EndTime, StringFormat='{}{0:HH:mm}'}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Subject" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding SubjectName}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Teacher" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding TeacherLastName}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,314 @@
+﻿<UserControl x:Class="dziennik.Views.AdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:dziennik.Views"
+             xmlns:converters="clr-namespace:dziennik.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="{Binding FullName}" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="Admin" FontSize="16" Margin="0,5,0,0"/>
+            </StackPanel>
+            <Button Content="Logout" Command="{Binding LogoutCommand}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,0,0,0" Padding="10,5"
+                    Height="32"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Text="{Binding KomunikatBledu}" 
+                   Foreground="Red" FontWeight="Bold" Margin="0,0,0,10"
+                   Visibility="{Binding KomunikatBledu, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Przedmiot:" VerticalAlignment="Center"/>
+            <ComboBox Width="200" Margin="10,0,0,0" DisplayMemberPath="Nazwa"
+                      ItemsSource="{Binding PrzypisanePrzedmioty}"
+                      SelectedItem="{Binding WybranyPrzedmiot}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Wybierz klasę:" Margin="0,0,0,5"/>
+                    <ComboBox ItemsSource="{Binding KlasyNauczyciela}" DisplayMemberPath="Nazwa"
+                              SelectedItem="{Binding WybranaKlasa}"/>
+                    <Button Content="Załaduj uczniów" Margin="0,5,0,0" Padding="5,2"
+                            Command="{Binding ZaladujUczniowCommand}"
+                            CommandParameter="{Binding WybranaKlasa}"/>
+                </StackPanel>
+
+                <ListView Grid.Row="1" Margin="0,10,0,0"
+                          ItemsSource="{Binding UczniowieKlasy}"
+                          SelectedItem="{Binding WybranyUczen}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Osoba.Imie"/>
+                                        <Binding Path="Osoba.Nazwisko"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <TabControl Grid.Column="1" Margin="10,0,0,0">
+                <TabItem Header="Oceny">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="463*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,10" Grid.ColumnSpan="2">
+                            <TextBlock Text="{Binding TrybEdycji, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='Edytuj ocenę:;Dodaj ocenę:'}" VerticalAlignment="Center"/>
+                            <ComboBox Width="50" Margin="10,0,0,0"
+                                      SelectedValuePath="Content"
+                                      SelectedValue="{Binding NowaOcenaWartosc}">
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="1.5"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="2.5"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="3.5"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="4.5"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="5.5"/>
+                                <ComboBoxItem Content="6"/>
+                            </ComboBox>
+                            <Button Content="Dodaj" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding DodajOceneCommand}"
+                                    Visibility="{Binding TrybEdycji, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+
+                            <Button Content="Zapisz" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding EdytujOceneCommand}"
+                                    Visibility="{Binding TrybEdycji, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <Button Content="Anuluj" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding AnulujEdycjeCommand}"
+                                    Visibility="{Binding TrybEdycji, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </StackPanel>
+
+                        <ListView Grid.Row="1" ItemsSource="{Binding OcenyUcznia}" 
+                                  SelectedItem="{Binding WybranaOcena}" Grid.ColumnSpan="2">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Ocena" Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Wartosc}" FontWeight="Bold"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Data wystawienia" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding DataWystawienia, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Akcje" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Usuń" Padding="10,0"
+                                                        Command="{Binding DataContext.UsunOceneCommand, 
+                                                        RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                        CommandParameter="{Binding}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Frekwencja">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10">
+                            <TextBlock Text="Status obecności:" VerticalAlignment="Center"/>
+                            <ComboBox Width="120" Margin="10,0,0,0"
+                                      SelectedValuePath="Tag"
+                                      SelectedValue="{Binding NowaFrekwencjaStatus}">
+                                <ComboBoxItem Content="Obecny" Tag="1"/>
+                                <ComboBoxItem Content="Nieobecny" Tag="2"/>
+                                <ComboBoxItem Content="Spóźniony" Tag="3"/>
+                            </ComboBox>
+                            <Button Content="Dodaj" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding DodajFrekwencjeCommand}"/>
+                            <Button Content="Edytuj" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding EdytujFrekwencjeCommand}"/>
+                            <Button Content="Usuń" Margin="10,0,0,0" Padding="10,0"
+                                    Command="{Binding UsunFrekwencjeCommand}"/>
+                        </StackPanel>
+
+                        <ListView Grid.Row="1" ItemsSource="{Binding FrekwencjeUcznia}" SelectedItem="{Binding WybranaFrekwencja}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Data" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Data, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Status" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Status}" Value="1">
+                                                                    <Setter Property="Text" Value="Obecny"/>
+                                                                    <Setter Property="Foreground" Value="#4CAF50"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="2">
+                                                                    <Setter Property="Text" Value="Nieobecny"/>
+                                                                    <Setter Property="Foreground" Value="#F44336"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="3">
+                                                                    <Setter Property="Text" Value="Spóźniony"/>
+                                                                    <Setter Property="Foreground" Value="#FFC107"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Statystyki">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,10,0,10" 
+                                    Visibility="{Binding PokazFrekwencja, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="Uczeń: " FontWeight="Bold"/>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="WybranyUczen.Osoba.Imie"/>
+                                            <Binding Path="WybranyUczen.Osoba.Nazwisko"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="Przedmiot: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding WybranyPrzedmiot.Nazwa}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="0,0,0,10" Margin="0,0,0,10"
+                                Visibility="{Binding PokazFrekwencja, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Statystyki ocen" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Średnia ocen:" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding SredniaPrzedmiotu, StringFormat='{}{0:0.00}'}" 
+                                                   Foreground="#1976D2" FontSize="18" Margin="0,5,0,0"/>    
+                                    </StackPanel>
+                                    <StackPanel Margin="40,0,0,0">
+                                        <TextBlock Text="Ocena końcowa:" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding OcenaKoncowa}" 
+                                                   Foreground="#1976D2" FontSize="18" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid Grid.Row="2" 
+                              Visibility="{Binding PokazFrekwencja, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Statystyki frekwencji" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                            <Grid Grid.Row="1" Margin="10,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                    <TextBlock Text="Frekwencja:" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding FrekwencjaPrzedmiotuProcentowa, StringFormat=' {0}%'}" 
+                                               Foreground="#1976D2" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="1" Text="{Binding FrekwencjaPrzedmiotuSzczegoly}" 
+                                           Margin="0,10,0,0" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Grid>
+
+                        <TextBlock Grid.Row="0" Grid.RowSpan="3" 
+                                   Text="Wybierz ucznia, aby zobaczyć jego statystyki" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
+                                   Visibility="{Binding PokazFrekwencja, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>
